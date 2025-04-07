@@ -18,7 +18,7 @@ class BaseReportCollector(ABC):
             data = self._process_file(file)
             partial_results.append(data)
 
-        return self._combine_results(partial_results)
+        return self._aggregate_data(partial_results)
 
     @abstractmethod
     def _process_file(self, path: str) -> dict:
@@ -30,11 +30,11 @@ class BaseReportCollector(ABC):
         )
 
     @abstractmethod
-    def _combine_results(self, data: list[dict]) -> dict:
+    def _aggregate_data(self, data: list[dict]) -> dict:
         """
         Aggregate data from different files.
         """
         raise NotImplementedError(
             "Subclasses must implement "
-            f"{self._combine_results.__name__} method."
+            f"{self._aggregate_data.__name__} method."
         )
