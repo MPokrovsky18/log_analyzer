@@ -3,7 +3,7 @@ from os import path
 from typing import Sequence
 
 from log_analyzer.exceptions import ReportNameError
-from log_analyzer.reports_registry import REPORTS
+from log_analyzer.report_registry import REPORTS
 
 
 def get_args_from_command_line() -> Namespace:

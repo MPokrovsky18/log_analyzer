@@ -1,5 +1,5 @@
-from log_analyzer.service import ReportService
-from log_analyzer.reports_registry import REPORTS
+from log_analyzer.report_service import ReportService
+from log_analyzer.report_registry import REPORTS
 
 
 class ReportServiceCreator:
