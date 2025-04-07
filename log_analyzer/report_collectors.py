@@ -38,3 +38,15 @@ class BaseReportCollector(ABC):
             "Subclasses must implement "
             f"{self._aggregate_data.__name__} method."
         )
+
+
+class HandlersReportCollector(BaseReportCollector):
+    """
+    The class collects data for the 'handlers' report.
+    """
+
+    def _process_file(self, path: str) -> dict:
+        return super()._process_file(path)
+
+    def _aggregate_data(self, data: list[dict]) -> dict:
+        return super()._aggregate_data(data)
