@@ -1,4 +1,4 @@
-from typing import NamedTuple, Iterable
+from typing import NamedTuple, Sequence
 
 from log_analyzer import utils
 
@@ -8,7 +8,7 @@ class Config(NamedTuple):
     Named tuple with configuration data.
     """
 
-    file_paths: Iterable[str]
+    file_paths: Sequence[str]
     report_name: str
 
 
