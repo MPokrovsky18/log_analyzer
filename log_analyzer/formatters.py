@@ -1,17 +1,19 @@
 from typing import Callable
 
+from log_analyzer.reports import HandlersReport, Report, LogLevelStats
 
-ReportFormatter = Callable[[dict], str]
+
+ReportFormatter = Callable[[Report], str]
 
 
-def format_handlers_report(data: dict) -> str:
+def format_handlers_report(report: HandlersReport) -> str:
     """
     Formats data for the 'handlers' report into text.
     """
 
     def get_fill_row(
             handler: str,
-            logs_info: dict[str, str | int] | None = None,
+            log_stats: LogLevelStats | None = None,
             **kwargs,
     ) -> str:
         row_template = (
@@ -20,8 +22,8 @@ def format_handlers_report(data: dict) -> str:
             "{error:<10} {critical:<10}\n"
         )
 
-        if logs_info is None:
-            logs_info = {
+        if log_stats is None:
+            log_stats = {
                 "DEBUG": kwargs.get("debug", ""),
                 "INFO": kwargs.get("info", ""),
                 "WARNING": kwargs.get("warning", ""),
@@ -31,15 +33,17 @@ def format_handlers_report(data: dict) -> str:
 
         return row_template.format(
             handler=handler,
-            debug=logs_info["DEBUG"],
-            info=logs_info["INFO"],
-            warning=logs_info["WARNING"],
-            error=logs_info["ERROR"],
-            critical=logs_info["CRITICAL"],
+            debug=log_stats.get("DEBUG", 0),
+            info=log_stats.get("INFO", 0),
+            warning=log_stats.get("WARNING", 0),
+            error=log_stats.get("ERROR", 0),
+            critical=log_stats.get("CRITICAL", 0),
         )
 
-    def get_handlers_table(handlers_info: dict[str, any]) -> str:
-        titles_colomns = get_fill_row(
+    def get_handlers_table(
+            handlers_log_level_stats: dict[str, LogLevelStats]
+    ) -> str:
+        table = get_fill_row(
             handler="HANDLER",
             debug="DEBUG",
             info="INFO",
@@ -48,21 +52,19 @@ def format_handlers_report(data: dict) -> str:
             critical="CRITICAL",
         )
 
-        table = titles_colomns
-
-        for handler, log_types in handlers_info.items():
+        for handler, log_stats in handlers_log_level_stats.items():
             table += get_fill_row(
                 handler=handler,
-                logs_info=log_types,
+                log_stats=log_stats,
             )
 
         table += get_fill_row(
             handler="",
-            logs_info=data["total handlers stats"],
+            log_stats=report.total_log_level_stats,
         )
 
         return table
 
-    text = f"Total requests: {data["total requests"]}\n"
+    text = f"Total requests: {report.total_requests}\n"
 
-    return text + get_handlers_table(data["handlers"])
+    return text + get_handlers_table(report.handlers_log_level_stats)

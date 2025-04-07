@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
 
+from log_analyzer.reports import HandlersReport, LogLevelStats, Report
+
 
 class BaseReportCollector(ABC):
     """
@@ -8,7 +10,7 @@ class BaseReportCollector(ABC):
     for collecting data from files into a report.
     """
 
-    def collect(self, file_paths: Sequence[str]) -> dict:
+    def collect(self, file_paths: Sequence[str]) -> Report:
         """
         Collect data from files.
         """
@@ -45,7 +47,7 @@ class HandlersReportCollector(BaseReportCollector):
     The class collects data for the 'handlers' report.
     """
 
-    def _process_file(self, path: str) -> dict:
+    def _process_file(self, path: str) -> dict[str, LogLevelStats]:
         data = {}
 
         with open(path, "r") as file:
@@ -59,7 +61,7 @@ class HandlersReportCollector(BaseReportCollector):
                 log_level = handler_info["log_level"]
 
                 if handler not in data:
-                    data[handler] = {}
+                    data[handler] = LogLevelStats()
 
                 if log_level not in data[handler]:
                     data[handler][log_level] = 0
@@ -84,35 +86,34 @@ class HandlersReportCollector(BaseReportCollector):
             "log_level": log_level,
         }
 
-    def _aggregate_data(self, data: list[dict]) -> dict:
+    def _aggregate_data(self, data: list[dict]) -> HandlersReport:
         total_requests = 0
-        handlers = {}
-        total_handlers_stats = {
-            "DEBUG": 0,
-            "INFO": 0,
-            "WARNING": 0,
-            "ERROR": 0,
-            "CRITICAL": 0,
-        }
+        handlers_log_level_stats = {}
+        total_log_level_stats = LogLevelStats()
 
         for file_data in data:
-            for handler, logs_info in file_data.items():
-                if handler not in handlers:
-                    handlers[handler] = {
-                        "DEBUG": 0,
-                        "INFO": 0,
-                        "WARNING": 0,
-                        "ERROR": 0,
-                        "CRITICAL": 0,
-                    }
+            for handler, logs_stats in file_data.items():
+                if handler not in handlers_log_level_stats:
+                    handlers_log_level_stats[handler] = LogLevelStats()
 
-                for log_level, count in logs_info.items():
-                    handlers[handler][log_level] += count
-                    total_handlers_stats[log_level] += count
+                for log_level, count in logs_stats.items():
+                    if (
+                        log_level
+                        not in handlers_log_level_stats[handler]
+                    ):
+                        handlers_log_level_stats[handler][log_level] = 0
+                    handlers_log_level_stats[handler][log_level] += count
+
+                    if (
+                        log_level
+                        not in total_log_level_stats
+                    ):
+                        total_log_level_stats[log_level] = 0
+                    total_log_level_stats[log_level] += count
                     total_requests += count
 
-        return {
-            "total requests": total_requests,
-            "handlers": handlers,
-            "total handlers stats": total_handlers_stats,
-        }
+        return HandlersReport(
+            total_requests=total_requests,
+            handlers_log_level_stats=handlers_log_level_stats,
+            total_log_level_stats=total_log_level_stats
+        )
