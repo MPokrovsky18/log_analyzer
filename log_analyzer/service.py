@@ -4,7 +4,7 @@ from log_analyzer.formatters import ReportFormatter
 from log_analyzer.report_collectors import BaseReportCollector
 
 
-class ReporService:
+class ReportService:
     """
     Class that outputs a report from data collected
     from files and formatted according to the function.
