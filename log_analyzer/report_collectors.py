@@ -50,5 +50,29 @@ class HandlersReportCollector(BaseReportCollector):
         return {"data": "data"}
 
     def _aggregate_data(self, data: list[dict]) -> dict:
-        # aggregated data.
-        return {"data": "data"}
+        return {
+            "total requests": 1000,
+            "handlers": {
+                "handler1": {
+                    "DEBUG": 100,
+                    "INFO": 100,
+                    "WARNING": 100,
+                    "ERROR": 100,
+                    "CRITICAL": 100,
+                },
+                "handler2": {
+                    "DEBUG": 100,
+                    "INFO": 100,
+                    "WARNING": 100,
+                    "ERROR": 100,
+                    "CRITICAL": 100,
+                },
+            },
+            "total handlers stats": {
+                "DEBUG": 200,
+                "INFO": 200,
+                "WARNING": 200,
+                "ERROR": 200,
+                "CRITICAL": 200,
+            }
+        }
