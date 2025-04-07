@@ -15,6 +15,6 @@ class ReportServiceCreator:
         report_attrs = REPORTS[report_name]
 
         return ReportService(
-            collector=report_attrs.report_collector,
+            collector=report_attrs.report_collector(),
             formatter=report_attrs.formatter,
         )

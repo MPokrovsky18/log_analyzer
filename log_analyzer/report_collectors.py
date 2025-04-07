@@ -46,7 +46,9 @@ class HandlersReportCollector(BaseReportCollector):
     """
 
     def _process_file(self, path: str) -> dict:
-        return super()._process_file(path)
+        # data after file processing.
+        return {"data": "data"}
 
     def _aggregate_data(self, data: list[dict]) -> dict:
-        return super()._aggregate_data(data)
+        # aggregated data.
+        return {"data": "data"}
