@@ -15,7 +15,6 @@ def test_collect_log_stats_from_log_file():
 
     with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_log:
         temp_log.write(log_content)
-        temp_log.seek(0)
         path = temp_log.name
 
     collector = HandlersReportCollector()
