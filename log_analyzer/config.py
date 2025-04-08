@@ -18,9 +18,8 @@ def get_config() -> Config:
     """
     parsed_args = utils.get_args_from_command_line()
     file_paths = utils.validate_file_paths_or_raise(parsed_args.file_paths)
-    report_name = utils.validate_report_name_or_raise(parsed_args.report)
 
     return Config(
         file_paths=file_paths,
-        report_name=report_name,
+        report_name=parsed_args.report,
     )

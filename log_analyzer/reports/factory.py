@@ -1,5 +1,6 @@
-from log_analyzer.report_service import ReportService
-from log_analyzer.report_registry import REPORTS
+from log_analyzer.reports.validators import validate_report_name_or_raise
+from log_analyzer.reports.service import ReportService
+from log_analyzer.reports.report_registry import REPORTS
 
 
 class ReportServiceCreator:
@@ -12,6 +13,7 @@ class ReportServiceCreator:
         """
         Create ReportService by report name.
         """
+        report_name = validate_report_name_or_raise(report_name)
         report_attrs = REPORTS[report_name]
 
         return ReportService(

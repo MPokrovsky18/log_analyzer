@@ -1,7 +1,10 @@
 from typing import NamedTuple
 
-from log_analyzer.formatters import format_handlers_report, ReportFormatter
-from log_analyzer.report_collectors import (
+from log_analyzer.reports.formatters import (
+    format_handlers_report,
+    ReportFormatter,
+)
+from log_analyzer.reports.collectors import (
     BaseReportCollector,
     HandlersReportCollector,
 )

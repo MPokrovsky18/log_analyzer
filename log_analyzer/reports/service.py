@@ -1,7 +1,7 @@
 from typing import Sequence
 
-from log_analyzer.formatters import ReportFormatter
-from log_analyzer.report_collectors import BaseReportCollector
+from log_analyzer.reports.formatters import ReportFormatter
+from log_analyzer.reports.collectors import BaseReportCollector
 
 
 class ReportService:

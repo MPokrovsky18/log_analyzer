@@ -1,6 +1,8 @@
 from typing import Callable
 
-from log_analyzer.reports import BaseReport, HandlersReport, LogLevelStats
+from log_analyzer.log_levels import LogLevelStats
+from log_analyzer.reports.base import BaseReport
+from log_analyzer.reports.reports import HandlersReport
 
 
 ReportFormatter = Callable[[BaseReport], str]

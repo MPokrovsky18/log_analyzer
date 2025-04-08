@@ -1,5 +1,5 @@
 from log_analyzer.config import get_config
-from log_analyzer.report_factory import ReportServiceCreator
+from log_analyzer.reports.factory import ReportServiceCreator
 
 
 def main():
