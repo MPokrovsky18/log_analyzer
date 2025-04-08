@@ -1,8 +1,11 @@
-from typing import TypedDict
 from enum import Enum
+from typing import TypedDict
 
 
 class LogLevelsEnum(Enum):
+    """
+    Enum of logging levels.
+    """
     DEBUG = "DEBUG"
     INFO = "INFO"
     WARNING = "WARNING"
@@ -36,4 +39,7 @@ def get_default_log_level_stats() -> LogLevelStats:
 
 
 def is_log_level(log_level: str) -> bool:
+    """
+    Check if a string is a log level.
+    """
     return log_level in LogLevelsEnum._member_map_

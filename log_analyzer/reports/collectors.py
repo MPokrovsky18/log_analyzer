@@ -41,8 +41,12 @@ class HandlersReportCollector(BaseReportCollector):
     def _parse_line(self, line: str) -> HandlerInfo | None:
         if "django.request" in line:
             parts = line.split()
-            handler = next(part for part in parts if part.startswith("/"))
-            log_level = next(part for part in parts if is_log_level(part))
+
+            try:
+                handler = next(part for part in parts if part.startswith("/"))
+                log_level = next(part for part in parts if is_log_level(part))
+            except StopIteration:
+                return
 
             return HandlerInfo(
                 handler=handler,

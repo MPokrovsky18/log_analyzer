@@ -9,7 +9,6 @@ def get_args_from_command_line() -> Namespace:
     """
     parser = ArgumentParser(
         description="Log analyzer from files.",
-        epilog="epilos here"
     )
     parser.add_argument("file_paths", nargs="+")
     parser.add_argument("--report", required=True)

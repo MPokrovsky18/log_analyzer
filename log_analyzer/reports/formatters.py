@@ -27,11 +27,10 @@ def format_handlers_report(report: HandlersReport) -> str:
             "{error:<10} {critical:<10}\n"
         )
 
-        if log_stats is None:
-            log_stats = {}
-
-            for level in LogLevelsEnum:
-                log_stats[level.name] = kwargs.get(level.name.lower(), "")
+        log_stats = log_stats or {
+            level.name: kwargs.get(level.name.lower(), "")
+            for level in LogLevelsEnum
+        }
 
         return row_template.format(
             handler=handler,
