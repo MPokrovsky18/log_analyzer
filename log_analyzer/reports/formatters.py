@@ -54,7 +54,7 @@ def format_handlers_report(report: HandlersReport) -> str:
             warning=LogLevelsEnum.WARNING.name,
             error=LogLevelsEnum.ERROR.name,
             critical=LogLevelsEnum.CRITICAL.name,
-        )
+        ) + "\n"
 
         handlers = sorted(handlers_log_level_stats.keys())
 
@@ -71,6 +71,6 @@ def format_handlers_report(report: HandlersReport) -> str:
 
         return table
 
-    text = f"Total requests: {report.total_requests}\n"
+    text = f"\nTotal requests: {report.total_requests}\n\n"
 
     return text + get_handlers_table(report.handlers_log_level_stats)
