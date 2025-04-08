@@ -43,3 +43,9 @@ python main.py path/to/log1.log path/to/log2.log --report handlers
 ```bash
 pytest --cov=log_analyzer
 ```
+
+## Пример результата
+
+Ниже пример вывода отчёта в консоль:
+
+![Пример отчёта](log_analyzer_result.png)
