@@ -1,4 +1,5 @@
 import sys
+import tempfile
 from types import SimpleNamespace
 
 import pytest
@@ -7,6 +8,9 @@ from tests.constants import (
     EXISTS_REPORT_NAME,
     FILE_1,
     FILE_2,
+    LOG_FILE_CONTENT,
+    LOG_LINE_1,
+    LOG_LINE_2,
     NOT_EXISTS_FILE,
 )
 
@@ -66,3 +70,24 @@ def set_unsuccess_fake_args_for_config(monkeypatch):
             FileNotFoundError("File not found")
         )
     )
+
+
+@pytest.fixture
+def create_handler_log_file():
+    """
+    Create a temporary log file for testing HandlersReportCollector.
+    """
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_log:
+        temp_log.write(LOG_FILE_CONTENT)
+        return temp_log.name
+
+
+@pytest.fixture
+def create_two_log_files_with_overlap(tmp_path):
+    file1 = tmp_path / FILE_1
+    file2 = tmp_path / FILE_2
+
+    file1.write_text(LOG_LINE_1)
+    file2.write_text(LOG_LINE_2)
+
+    return [str(file1), str(file2)]
