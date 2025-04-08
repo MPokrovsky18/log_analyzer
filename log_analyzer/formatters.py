@@ -1,9 +1,9 @@
 from typing import Callable
 
-from log_analyzer.reports import HandlersReport, Report, LogLevelStats
+from log_analyzer.reports import BaseReport, HandlersReport, LogLevelStats
 
 
-ReportFormatter = Callable[[Report], str]
+ReportFormatter = Callable[[BaseReport], str]
 
 
 def format_handlers_report(report: HandlersReport) -> str:

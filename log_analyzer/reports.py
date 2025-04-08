@@ -15,7 +15,7 @@ class LogLevelStats(TypedDict):
     CRITICAL: int
 
 
-class Report(ABC):
+class BaseReport(ABC):
     """
     An abstract class whose descendants store report data.
     """
@@ -24,7 +24,7 @@ class Report(ABC):
 
 
 @dataclass
-class HandlersReport(Report):
+class HandlersReport(BaseReport):
     """
     The class that stores the report data is 'handlers'.
     """

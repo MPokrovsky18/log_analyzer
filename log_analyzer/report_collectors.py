@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
 
-from log_analyzer.reports import HandlersReport, LogLevelStats, Report
+from log_analyzer.reports import BaseReport, HandlersReport, LogLevelStats
 
 
 class BaseReportCollector(ABC):
@@ -10,7 +10,7 @@ class BaseReportCollector(ABC):
     for collecting data from files into a report.
     """
 
-    def collect(self, file_paths: Sequence[str]) -> Report:
+    def collect(self, file_paths: Sequence[str]) -> BaseReport:
         """
         Collect data from files.
         """
@@ -71,20 +71,16 @@ class HandlersReportCollector(BaseReportCollector):
         return data
 
     def _parse_line(self, line: str) -> dict | None:
-        if line.find("django.request") < 0:
-            return
+        if "django.request" in line:
+            parts = line.split()
+            handler = next(part for part in parts if part.startswith("/"))
+            log_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+            log_level = next(part for part in parts if part in log_levels)
 
-        data = line.split()
-        handler = list(filter(lambda x: x.startswith("/"), data))[0]
-
-        log_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
-
-        log_level = list(filter(lambda x: x in log_levels, data))[0]
-
-        return {
-            "handler": handler,
-            "log_level": log_level,
-        }
+            return {
+                "handler": handler,
+                "log_level": log_level,
+            }
 
     def _aggregate_data(self, data: list[dict]) -> HandlersReport:
         total_requests = 0
