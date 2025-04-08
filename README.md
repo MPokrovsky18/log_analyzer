@@ -14,7 +14,7 @@ python main.py path/to/log1.log path/to/log2.log --report handlers
 
 - `pytest` и `pytest-cov` (для тестов)
 
-```
+
 
 ## Как добавить новый отчёт
 
@@ -36,12 +36,13 @@ python main.py path/to/log1.log path/to/log2.log --report handlers
     Запускайте `main.py` с новым именем отчёта: `--report your_report_name`.
 
 
+
 ## Тестирование
 
 Для запуска тестов:
 
 ```bash
-pytest --cov=log_analyzer
+pytest --cov=log_analyzer tests/
 ```
 
 ## Пример результата
