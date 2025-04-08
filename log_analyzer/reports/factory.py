@@ -1,6 +1,6 @@
 from log_analyzer.reports.validators import validate_report_name_or_raise
-from log_analyzer.reports.service import ReportService
 from log_analyzer.reports.report_registry import REPORTS
+from log_analyzer.reports.service import ReportService
 
 
 class ReportServiceCreator:

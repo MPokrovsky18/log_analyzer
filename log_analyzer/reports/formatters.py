@@ -1,6 +1,6 @@
 from typing import Callable
 
-from log_analyzer.log_levels import LogLevelStats
+from log_analyzer.log_levels import LogLevelsEnum, LogLevelStats
 from log_analyzer.reports.base import BaseReport
 from log_analyzer.reports.reports import HandlersReport
 
@@ -18,6 +18,9 @@ def format_handlers_report(report: HandlersReport) -> str:
             log_stats: LogLevelStats | None = None,
             **kwargs,
     ) -> str:
+        """
+        Get a row with filled columns.
+        """
         row_template = (
             "{handler:<20} {debug:<10} "
             "{info:<10} {warning:<10} "
@@ -25,39 +28,41 @@ def format_handlers_report(report: HandlersReport) -> str:
         )
 
         if log_stats is None:
-            log_stats = {
-                "DEBUG": kwargs.get("debug", ""),
-                "INFO": kwargs.get("info", ""),
-                "WARNING": kwargs.get("warning", ""),
-                "ERROR": kwargs.get("error", ""),
-                "CRITICAL": kwargs.get("critical", ""),
-            }
+            log_stats = {}
+
+            for level in LogLevelsEnum:
+                log_stats[level.name] = kwargs.get(level.name.lower(), "")
 
         return row_template.format(
             handler=handler,
-            debug=log_stats.get("DEBUG", 0),
-            info=log_stats.get("INFO", 0),
-            warning=log_stats.get("WARNING", 0),
-            error=log_stats.get("ERROR", 0),
-            critical=log_stats.get("CRITICAL", 0),
+            debug=log_stats.get(LogLevelsEnum.DEBUG.name, 0),
+            info=log_stats.get(LogLevelsEnum.INFO.name, 0),
+            warning=log_stats.get(LogLevelsEnum.WARNING.name, 0),
+            error=log_stats.get(LogLevelsEnum.ERROR.name, 0),
+            critical=log_stats.get(LogLevelsEnum.CRITICAL.name, 0),
         )
 
     def get_handlers_table(
             handlers_log_level_stats: dict[str, LogLevelStats]
     ) -> str:
+        """
+        Get table of handlers and log statistics.
+        """
         table = get_fill_row(
             handler="HANDLER",
-            debug="DEBUG",
-            info="INFO",
-            warning="WARNING",
-            error="ERROR",
-            critical="CRITICAL",
+            debug=LogLevelsEnum.DEBUG.name,
+            info=LogLevelsEnum.INFO.name,
+            warning=LogLevelsEnum.WARNING.name,
+            error=LogLevelsEnum.ERROR.name,
+            critical=LogLevelsEnum.CRITICAL.name,
         )
 
-        for handler, log_stats in handlers_log_level_stats.items():
+        handlers = sorted(handlers_log_level_stats.keys())
+
+        for handler in handlers:
             table += get_fill_row(
                 handler=handler,
-                log_stats=log_stats,
+                log_stats=handlers_log_level_stats[handler]
             )
 
         table += get_fill_row(

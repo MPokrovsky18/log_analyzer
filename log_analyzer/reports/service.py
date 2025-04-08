@@ -1,7 +1,7 @@
 from typing import Sequence
 
 from log_analyzer.reports.formatters import ReportFormatter
-from log_analyzer.reports.collectors import BaseReportCollector
+from log_analyzer.reports.base import BaseReport, BaseReportCollector
 
 
 class ReportService:
@@ -22,6 +22,12 @@ class ReportService:
         """
         Collects, formats and outputs a report.
         """
-        data = self._collector.collect(file_paths)
-        formatted_text = self._formatter(data)
+        report = self._collector.collect(file_paths)
+        self._display_report(report)
+
+    def _display_report(self, report: BaseReport) -> None:
+        """
+        Output report to console.
+        """
+        formatted_text = self._formatter(report)
         print(formatted_text)

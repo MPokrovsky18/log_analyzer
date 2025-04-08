@@ -38,7 +38,7 @@ class BaseReportCollector(ABC):
         )
 
     @abstractmethod
-    def _aggregate_data(self, data: list[dict]) -> dict:
+    def _aggregate_data(self, data: list[dict]) -> BaseReport:
         """
         Aggregate data from different files.
         """
